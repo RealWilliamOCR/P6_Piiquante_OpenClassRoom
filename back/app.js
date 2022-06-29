@@ -1,7 +1,6 @@
 const express = require('express');
-
 const app = express();
-const mongoose = require('mongoose');
+const Thing = require('./models/thing');
 
 app.use((req, res, next) => {
     console.log('Requête reçue !');
@@ -32,11 +31,16 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.post('/api/stuff', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({
-        message: 'Objet créé !'
+    delete req.body._id;
+    const thing = new Thing({
+        ...req.body
     });
+    thing.save()
+        .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
+        .catch(error => res.status(400).json({ error }));
 });
+
+const mongoose = require('mongoose');
 
 mongoose.connect('mongodb+srv://WilliamTheBest:Cody_RhodesWrestleMania38@piiquante.645cjp4.mongodb.net/?retryWrites=true&w=majority', {
         useNewUrlParser: true,
