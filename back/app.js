@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+const mongoose = require('mongoose');
 
 app.use((req, res, next) => {
     console.log('Requête reçue !');
@@ -37,8 +38,7 @@ app.post('/api/stuff', (req, res, next) => {
     });
 });
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://WilliamTheBest:Cody_RhodesWrestleMania38@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://WilliamTheBest:Cody_RhodesWrestleMania38@piiquante.645cjp4.mongodb.net/?retryWrites=true&w=majority', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
