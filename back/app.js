@@ -1,25 +1,21 @@
 const express = require('express');
 const app = express();
-const Thing = require('./models/thing');
 
-app.use((req, res, next) => {
-    console.log('Requête reçue !');
-    next();
-});
+module.exports = app;
 
-app.use((req, res, next) => {
-    res.status(201);
-    next();
-});
+const mongoose = require('mongoose');
 
-app.use((req, res, next) => {
-    res.json({ message: 'Votre requête a bien été reçue !' });
-    next();
-});
+const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
-app.use((req, res, next) => {
-    console.log('Réponse envoyée avec succès !');
-});
+mongoose.connect('mongodb+srv://WillOCR:0000@hottakesp6.mdcp4qa.mongodb.net/?retryWrites=true&w=majority', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+app.use(express.json());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,23 +24,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.json());
+app.use('/api/stuff', stuffRoutes);
+app.use('/api/auth', userRoutes);
 
-app.post('/api/stuff', (req, res, next) => {
-    delete req.body._id;
-    const thing = new Thing({
-        ...req.body
-    });
-    thing.save()
-        .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
-        .catch(error => res.status(400).json({ error }));
-});
-
-const mongoose = require('mongoose');
-
-mongoose.connect('mongodb+srv://WilliamTheBest:Cody_RhodesWrestleMania38@piiquante.645cjp4.mongodb.net/?retryWrites=true&w=majority', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch(() => console.log('Connexion à MongoDB échouée !'));
+module.exports = app;
