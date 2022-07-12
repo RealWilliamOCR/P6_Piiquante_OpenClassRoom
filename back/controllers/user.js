@@ -6,12 +6,12 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10) //hash le mot de passe, on execute 10 fois l'algorithme de hachage
         .then(hash => {
             const user = new User({
-                email: emailHash,
+                email: req.body.email,
                 password: hash
             });
 
             user.save() //enregistrement de l utilisateur avec retour promise
-                .then(() => res.status(201).json({ message: 'New Utilisateur créé !' }))
+                .then(() => res.status(201).json({ message: 'New utilisateur créé !' }))
                 .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
