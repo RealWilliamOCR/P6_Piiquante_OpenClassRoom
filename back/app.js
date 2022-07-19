@@ -23,16 +23,17 @@ mongoose.connect('mongodb+srv://WillOCR:AZERTY@hottakesp6.mdcp4qa.mongodb.net/?r
 // en cas de ces dernières.
 app.use(express.json());
 
+// Utilisation d'Helmet qui est une extension de Node permettant de sécuriser les requêtes HTML.
+app.use(helmet());
+
 // Authorisation et permission à l'utilisateur de récupérer, d'envoyer, d'insérer, de supprimer, de patcher et de rajouter des options
 app.use((req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "same-site");
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
-
-// Utilisation d'Helmet qui est une extension de Node permettant de sécuriser les requêtes HTML.
-app.use(helmet());
 
 // Lien qui redirige les images des sauces dans le dossier images
 app.use('/images', express.static(path.join(__dirname, 'images')));
