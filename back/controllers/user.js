@@ -3,9 +3,9 @@ const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
 
 
-//Inscription de l'utilisateur
+// S'inscrire
 exports.signup = (req, res, next) => {
-    //utilisation de bcrypt pour hasher le mot de passe
+    // Hashage du mot de passe
     bcrypt
         .hash(req.body.password, 10)
         .then((hash) => {
@@ -21,7 +21,7 @@ exports.signup = (req, res, next) => {
         .catch((error) => res.status(500).json({ message: error.message }));
 };
 
-//Connexion d'un utilisateur et attribution d'un token utilisateur
+// Connexion et génération d'un token
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then((user) => {
